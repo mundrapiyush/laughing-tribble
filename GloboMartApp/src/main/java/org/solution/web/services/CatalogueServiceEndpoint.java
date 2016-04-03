@@ -38,34 +38,15 @@ public class CatalogueServiceEndpoint {
 	
 	@GET
 	@Produces("application/json")
-	public Response getProducts() {
-		ResponseBuilder response = new ResponseBuilderImpl();
-		List<Product> productList = catalogueService.getProducts();
-		ObjectMapper mapper = new ObjectMapper();
-		JSONArray productJSONArray = new JSONArray();
-		try {
-			for(Product product : productList){
-				String jsonString = mapper.writeValueAsString(product);
-				productJSONArray.put(new JSONObject(jsonString));
-			}
-			JSONObject responseObject = new JSONObject();
-			responseObject.put("products", productJSONArray);
-			response.entity(responseObject);
-			response.status(Response.Status.OK);
-
-		} catch (IOException | JSONException e) {
-			response.entity(e.getMessage());
-			response.status(Response.Status.INTERNAL_SERVER_ERROR);
-		}
-		return response.build();
-	}
-	
-	@GET
-	@Produces("application/json")
 	public Response getProducts(@QueryParam("category") String category) {
 		
 		ResponseBuilder response = new ResponseBuilderImpl();
-		List<Product> productList = catalogueService.getProductsByType(category);
+		List<Product> productList = null;
+		if(category != null)
+			productList = catalogueService.getProductsByType(category);
+		else
+			productList = catalogueService.getProducts();
+		
 		ObjectMapper mapper = new ObjectMapper();
 		JSONArray productJSONArray = new JSONArray();
 		try {

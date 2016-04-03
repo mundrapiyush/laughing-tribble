@@ -1,7 +1,6 @@
 package org.solution.services;
 
-import java.util.UUID;
-
+import java.sql.SQLException;
 import org.solution.database.services.Database;
 import org.solution.entities.Product;
 
@@ -15,8 +14,15 @@ public class PricingService {
 	
 	public double getPrice(String productId) {
 		
-		Product product = dbInstance.getItem(UUID.fromString(productId));
+		Product product = null;
 		double priceInDollar = 0.0;
+		try {
+			product = dbInstance.getItem(Integer.parseInt(productId));
+		} catch (NumberFormatException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		if(product != null)
 			priceInDollar = product.getPriceInDollar();	
 		return priceInDollar;

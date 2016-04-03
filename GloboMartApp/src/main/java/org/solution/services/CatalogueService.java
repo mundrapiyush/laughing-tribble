@@ -1,8 +1,7 @@
 package org.solution.services;
 
+import java.sql.SQLException;
 import java.util.List;
-import java.util.UUID;
-
 import org.solution.database.services.Database;
 import org.solution.entities.Product;
 import org.solution.entities.ProductCategory;
@@ -16,36 +15,62 @@ public class CatalogueService {
 	}
 
 	public List<Product> getProducts() {
-		return dbInstance.getItems();
+		List<Product> productList = null;
+		try {
+			productList = dbInstance.getItems();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return productList;
 	}
 	
 	public List<Product> getProductsByType(String type) {
-		return dbInstance.getItemsByType(ProductCategory.valueOf(type));
+		
+		List<Product> productList = null;
+		try {
+			productList = dbInstance.getItemsByType(ProductCategory.valueOf(type));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return productList;
 	}
 	
 	public Product getProduct(String productId){
 		
-		Product product = dbInstance.getItem(UUID.fromString(productId));
+		Product product = null;
+		try {
+			product = dbInstance.getItem(Integer.parseInt(productId));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return product;
 	}
 	
 	public Product addProduct(String name, String category, double priceInDollar){
 		
 		ProductCategory productCategory = ProductCategory.valueOf(category);
-		Product newProduct = new Product(name, productCategory, priceInDollar);
-		boolean isSuccess = dbInstance.addItem(newProduct);
-		if(isSuccess)
-			return newProduct;
-		else
-			return null;
+		Product newProduct = new Product(-1, name, productCategory, priceInDollar);
+		try {
+			newProduct = dbInstance.addItem(newProduct);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return newProduct;
 	}
 	
 	public boolean removeProduct(String productId){
 		
-		boolean isSuccess = dbInstance.remItem(UUID.fromString(productId));
+		boolean isSuccess = false;
+		try {
+			isSuccess = dbInstance.remItem(Integer.parseInt(productId));
+		} catch (NumberFormatException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return isSuccess;
 	}
-	
-	
-
 }

@@ -1,16 +1,14 @@
 package org.solution.entities;
 
-import java.util.UUID;
-
 public class Product {
 
-	private final UUID productId;
+	private final long productId;
 	private final String name;
 	private final ProductCategory category;
 	private final double priceInDollar;
 	
-	public Product(String name, ProductCategory category, double priceInDollar){
-		this.productId = UUID.randomUUID();
+	public Product(long productId, String name, ProductCategory category, double priceInDollar){
+		this.productId = productId;
 		this.name = name;
 		this.category = category;
 		this.priceInDollar = priceInDollar;
@@ -24,7 +22,7 @@ public class Product {
 	public double getPriceInDollar() {
 		return priceInDollar;
 	}
-	public UUID getProductId() {
+	public long getProductId() {
 		return productId;
 	}	
 }

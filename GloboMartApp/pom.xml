@@ -77,6 +77,11 @@
   			<artifactId>httpclient</artifactId>
   			<version>4.5.2</version>
 		</dependency>
+		<dependency>
+    		<groupId>org.hsqldb</groupId>
+    		<artifactId>hsqldb</artifactId>
+    		<version>2.2.4</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>GloboMartApp</finalName>
