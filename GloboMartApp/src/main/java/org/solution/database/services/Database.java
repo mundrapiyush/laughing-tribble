@@ -21,7 +21,7 @@ public class Database {
 														  + "PRODUCT_ID INTEGER IDENTITY PRIMARY KEY,"
 														  + "PRODUCT_NAME VARCHAR(50)  NOT NULL,"
 														  + "PRODUCT_CATEGORY VARCHAR(50),"
-														  + "PRICE NUMERIC);";
+														  + "PRICE  DOUBLE);";
 	
 	private static final String DB_INSERT_PRODUCT_TAB_QRY = "INSERT INTO PRODUCTS"
 													      + "(PRODUCT_ID, PRODUCT_NAME, PRODUCT_CATEGORY, PRICE)"
@@ -32,11 +32,14 @@ public class Database {
 	private static final String DB_SELECT_PRODUCT_FRM_CATEGORY_TAB_QRY = "SELECT * FROM PRODUCTS WHERE PRODUCT_CATEGORY=?";
 	
 	private static final String DB_DELETE_PRODUCT_FRM_PRODUCTID_TAB_QRY = "DELETE FROM PRODUCTS WHERE PRODUCT_ID=?";
+	private static final String DB_SHUTDOWN_DATABASE_QRY = "SHUTDOWN";
 	
 	private Database(){
 		try {
 			Class.forName("org.hsqldb.jdbc.JDBCDriver");
-			conn = DriverManager.getConnection("jdbc:hsqldb:globomartDB","SA","");
+			
+			//conn = DriverManager.getConnection("jdbc:hsqldb:globomartDB","SA","");
+			conn = DriverManager.getConnection("jdbc:hsqldb:hsql://ec2-54-255-136-38.ap-southeast-1.compute.amazonaws.com/xdb", "SA", "");
 			conn.createStatement().executeUpdate(DB_TRUNCATE_SCHEMA);
 			conn.createStatement().executeUpdate(DB_CREATE_PRODUCT_TAB_QRY);
 			conn.commit();
@@ -92,7 +95,7 @@ public class Database {
                 double price = generatedKeys.getDouble(4);
                 newProduct = new Product(productId, productName, ProductCategory.valueOf(productCategory), price);
             }
-        }		
+        }
 		return newProduct;
 	}
 	

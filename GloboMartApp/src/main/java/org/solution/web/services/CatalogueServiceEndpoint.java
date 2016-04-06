@@ -11,6 +11,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
@@ -73,7 +74,12 @@ public class CatalogueServiceEndpoint {
 		
 		ResponseBuilder response = new ResponseBuilderImpl();
 		Product product = catalogueService.getProduct(productId);
-		try {
+	    
+		CacheControl cacheControl = new CacheControl();
+	    cacheControl.setMaxAge(3600);
+	    cacheControl.setPrivate(false);
+		
+	    try {
 			JSONObject responseObject = new JSONObject();
 			responseObject.put("productId", product.getProductId());
 			responseObject.put("price", product.getPriceInDollar());
@@ -81,6 +87,7 @@ public class CatalogueServiceEndpoint {
 			responseObject.put("name", product.getName());
 			response.entity(responseObject);
 			response.status(Response.Status.OK);
+			response.cacheControl(cacheControl);
 
 		} catch (JSONException e) {
 			response.entity(e.getMessage());
