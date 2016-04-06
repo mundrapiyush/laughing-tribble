@@ -17,10 +17,17 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-import org.solution.entities.ProductCategory;
 
 public class GloboMartHttpClientTest {
 
+	private enum ProductCategory {
+		ELECTRONICS,
+		BOOKS,
+		HOME_APPLIANCES,
+		SPORTS_AND_FITNESS,
+		HEALTHCARE
+	}
+	
 	public static final String putProductUrl = "http://globomartelb-1135890954.ap-southeast-1.elb.amazonaws.com/GloboMartApp/engine/products";
 	public static final String getProductUrl = "http://globomartelb-1135890954.ap-southeast-1.elb.amazonaws.com/GloboMartApp/engine/products";
 	public static final String getPriceUrl = "http://globomartelb-1135890954.ap-southeast-1.elb.amazonaws.com/GloboMartApp/engine/price";
